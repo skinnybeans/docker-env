@@ -54,13 +54,31 @@ No idea why these outputs are different however..
 
 ## Running on an M1 Mac
 
-Both `test-1` and `test-2`
+The results seem to be the same when running either `test-1` or `test-2`, but different to the results on an Intel mac.
 
-give:
+```text
+TEST_VAR=somevalue
+HOSTNAME=2ee17fc3fd8c
+SHLVL=1
+HOME=/root
+ANOTHER_TEST_VAR=
+TERM=xterm
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+PWD=/
+```
+
+When I do:
+
+```bash
+unset TEST_VAR
+export ANOTHER_TEST_VAR=hello
+```
+
+the output from both make targets is:
 
 ```text
 TEST_VAR=ANOTHER_TEST_VAR
-HOSTNAME=5e1fb2c66eb9
+HOSTNAME=02f7131a653e
 SHLVL=1
 HOME=/root
 TERM=xterm
@@ -68,4 +86,20 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 PWD=/
 ```
 
-This is really bad if you want to leverage patterns like 3musketeers, or any time you have optional ENV vars that need to get passed into a container.
+The only way I've seen to get consistent behaviour on the M1 is making sure all ENV vars that are getting passed through to the container are set in the parent.
+
+```bash
+export TEST_VAR=somevalue
+export ANOTHER_TEST_VAR=hello
+```
+
+```text
+TEST_VAR=somevalue
+HOSTNAME=298c56d786dc
+SHLVL=1
+HOME=/root
+ANOTHER_TEST_VAR=hello
+TERM=xterm
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+PWD=/
+```
