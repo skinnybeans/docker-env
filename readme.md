@@ -1,4 +1,4 @@
-# Inconsistent ENV file treatment with docker compose and docker-compose
+# Inconsistent ENV file treatment with docker compose and docker-compose on M1 mac
 
 I was having trouble passing environment variables into containers on my M1 mac.
 
